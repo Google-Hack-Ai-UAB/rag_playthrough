@@ -1,0 +1,101 @@
+{
+  "first_name" : "John",
+  "middle_name" : "Frederick",
+  "last_name" : "Doe",
+  "email" : "j.doe@uab.edu",
+  "phone_number" : "3345556789",
+  "education" : [
+    {
+        "level" : "Masters of Science",
+        "major" : "Cybersecurity",
+        "minor" : "",
+        "school" : "University of Alabama at Birmingham",
+        "begin_date" : "August 2022",
+        "end_date" : "August 2024",
+        "gpa" : "4.00"
+    },
+    {
+        "level" : "Bachelors of Science",
+        "major" : "Computer Science",
+        "minor" : "Information Systems",
+        "school" : "University of Alabama at Birmingham",
+        "begin_date" : "August 2020",
+        "end_date" : "August 2022",
+        "gpa" : "4.00"
+    }
+  ],
+  "experience" : [
+    {
+        "job_type" : "full_time",
+        "employer" : "University of Alabama at Birmingham",
+        "job_title" : "Teaching Assistant: Probability & Statistics",
+        "description" : "Teach Probability Theory and Python programming (Numpy, Matplotlib, and other libraries). Assist 100’s of students by hosting lectures, office hours, and study sessions. Proctor exams, collaborate with the professor on course materials, and mentor students. Prepare lecture material, grade assignments, and provide valuable feedback for students."
+    },
+    {
+        "job_type" : "full_time",
+        "employer" : "Saucey Inc.",
+        "job_title" : "Catalog Specialist",
+        "description" : "Attend weekly and biweekly sprint reviews to give updates on my team’s projects. Evaluate 100’s of stores’ onboarding inventory and provide insightful feedback. Modify SQL and Bash scripts according to parameters on a store‑to‑store basis. Quality control of 100’s of store menus and website products."
+    },
+    {
+        "job_type" : "part_time",
+        "employer" : "Saucey Inc.",
+        "job_title" : "Data Entry Intern",
+        "description" : "Ensure consistent data entry across platforms for new and pre‑existing stores. Validate and verify existing data, images, and inventory of products for 100’s of stores. Communicate effectively with team members on deadlines, projects, and updates."
+    }
+  ],
+  "certifications" : [
+  ],
+  "skills" : [
+    "Python",
+    "C/C++" ,
+    "Java",
+    "JavaScript",
+    "Git",
+    "Bash/Powershell",
+    "GDScript",
+    "PostgreSQL",
+    "Linear Algebra",
+    "Calculus",
+    "Probability Theory",
+    "Discrete Maths",
+    "Numerical Analysis",
+    "Real Analysis",
+    "Differential Equations",
+    "Linux",
+    "VS Code",
+    "IntelliJ",
+    "Docker",
+    "Git",
+    "Godot Engine",
+    "JavaFX",
+    "Flask",
+    "Google Workspace",
+    "MS Office",
+    "Adobe Creative Suite"
+  ],
+  "projects" : [
+    {
+        "activity_name" : "Maze-Solving Bot",
+        "description" : "Implemented and fine-tuned algorithms such as A* search, to optimize the bot's pathfinding abilities. Worked effectively in a team environment, collaborating with other students from diverse backgrounds to achieve project goals. Identified challenges and devised creative solutions to optimize the bot's performance, making it adaptable to various mazes",
+        "skills" : [
+          "A*",
+          "C++"
+        ]
+    },
+    {
+        "activity_name" : "Godot RPG Game",
+        "description" : "Created a 2D role-playing game where a player can explore areas and defeat monsters. Programmed the logic and physics engine for the combat and movement systems. Utilized the integrated Godot blender to create sprite animations",
+        "skills" : [
+          "Godot"
+        ]
+    }
+  ],
+  "awards" : [
+    {
+      "name" : "UAB Presidential",
+      "date" : "Spring 2023",
+      "description" : "This award is given to students that receive A's in all classes enrolled in that current semester"
+    }
+  ]
+}

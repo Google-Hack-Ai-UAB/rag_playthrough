@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "vertexaiconversations-418821",
+  "private_key_id": "426bb14e741ffe19c512067cc0fd756dc8aef867",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCml/+q56a20Hre\nOn5nEUVkfT27O1qQtyNsTHadLawsOqDI4zFa2q8XvtYnRtGw7+l22PA08uU639Sw\nAic+LQSy5o1br3CIhhbevoFXBH8PeeTgQhJ/BRj/2RovhY0qsJdwBCRYmhRb69pW\n4L3sPIea5ShR+xsvO5EQ1GLqkgL86W957Q1MGvnZJa2Nm9Mwc/mpvXedoSbmPiNa\nU7dtTMce34lnmVtsfStV8+Jq+SauIOPDhijxY2euyR7ONX+wylZiF79M3Ws+1nSP\n2dNyCPQbECyOFPTwX/SGET/kD0Ukh8gEloIKK6d1yeM3lI02rl8ydVOWMjMNDqpm\nAG1AjSEZAgMBAAECggEACahEzcxbO5yLDNwk9PZZOJWyiQqsKbi2HNpzY1HxGcjF\nxpN2CltkPEsHqNP4BqrntKgnh5g/jdnJH3FmgzoSnEjVb7fUPRPR2lR+lLPp5jSl\nnhLydcrOu9Ei7ZePOwbs5nVVAo5fCQObfv8M/3d0UHhBjbwR47tvIcPAHrM7aVwK\ncG5kcH3mqq6DqSYx894djGsODjrWj1agVnaeTmQ80Z7ajEmNLguyPTz7Xqm5GIRM\nPdbP4Uani6SGSt9WgN63Ufyszz+6b2fjSTr4g9uzLX44i2J3xFLul/5R8VujfyHn\nEIBAN2sOjbgiO2cSjt+8w9JbcI6JULexneCSDv13YQKBgQDWmwTC1SWCWtj3n8xf\nTvE/729LUOENWKCeXIaLlqKYpQbnywI4EwdrSs3O7sYasgaFDBSOq2PTtiTQVJ2+\nKMuX1r8RjX+AI7rPw4oMtb0GhK3GNmpSNVG6z4Ds/XHpVYdc9W+02K1Kyeuamd4r\n1rXx01Qq8Dt1JBYhV4mt7B6PoQKBgQDGujYaT1Bspbt5psOCqt25iCGMv8gsvucM\nfG1gD3drOUW5E7oWWKJqOeGmHHuRdMlQoe2GFgTHUrRDmXK8o+tbzgPDbM1Zv+yW\noY5Z3PAj62mzMfS7HvBYoWtgX8HQkRL8bf+cjlazNRmTjY/W4z1cLSF+tBDHClEd\nQz8eKyp+eQKBgG4UzGdoUDpCgYLbnEjTRJrIJe2bSiW/bXxt97IIjdUA6b7ienvq\n/uZBU7qu7j1pTkDXBoB8V9OUXePjU5rkcDKtvAqz60/+g+fo5JpKavC6BC1lYjpT\nEV5i7D4kb1cCQVIkr60zbAit9MWz4avZEjE+drEj00vuO8/UiFIHiVGhAoGBALhW\n0wjkub2OnrDhuEnlJXeMh1KAM7cN/lTetrZ8olGb9skPO3avETloJ6Bmm1j59CQP\nkLzof9ZFKWHrXTsO8qteFq+YpYOzPEsd4WYKQ9eN76aBmHpa4KfWVDw5lxdY+zuc\n7ZbTkij6AJeWoO68K5btZjyZ21ZGg6eZUVsyv2BBAoGAYPcVhpYbw3sRg9uOHqyT\nCR0HpXM6+ahDTigmSUHD9adHj4vTFyjiAUkNkRDelzRD5k02lAc0KhDKnOkre62g\nbdO7x3f+xwUrAMiHPrRVmfP5TDbV3uLlU10/htQwwIt+LoLh7GVi8UmaJSwsnWTh\n9L02Zn38X/WC8vbm4Pu6CHQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "lordwork@vertexaiconversations-418821.iam.gserviceaccount.com",
+  "client_id": "110188053361514539675",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/lordwork%40vertexaiconversations-418821.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

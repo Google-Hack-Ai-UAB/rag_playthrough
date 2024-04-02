@@ -1,0 +1,73 @@
+{
+  "first_name" : "Jayden",
+  "middle_name" : "",
+  "last_name" : "Pyles",
+  "email" : "jaydenpyles0524@gmail.com",
+  "phone_number" : "2054413436",
+  "education" : [
+    {
+        "level" : "High School",
+        "major" : "",
+        "minor" : "",
+        "school" : "Alabama School of Math and Science",
+        "begin_date" : "",
+        "end_date" : "May 2020",
+        "gpa" : "3.9"
+    },
+    {
+        "level" : "Bachelors of Arts",
+        "major" : "Computer Science",
+        "minor" : "Mathematics",
+        "school" : "University of Alabama at Birmingham",
+        "begin_date" : "",
+        "end_date" : "May 2024",
+        "gpa" : "3.8"
+    }
+  ],
+  "experience" : [
+    {
+        "job_type" : "part_time",
+        "employer" : "DarkTower",
+        "job_title" : "Software Developer",
+        "description" : "Developed full-stack web applications using Flask, FastAPI, Svelte, and React. Designed database schemas with EdgeDB and created HTTP APIs for seamless interaction with EdgeDB and PostgreSQL databases. Maintained and improved legacy codebases for enhanced functionality and maintainability. Containerized microservices for efficient application deployment and scalability using Docker. Developed Gitlab CI/CD pipelines for applications."
+    },
+    {
+        "job_type" : "part_time",
+        "employer" : "Computer Forensics Research Lab",
+        "job_title" : "Information and Technology Specialist",
+        "description" : "Managed and maintained the organization's domain controller, providing secure access to users and ensuring the proper functioning of server systems. Set up and configured virtual machines for analysts, providing them with the necessary computing resources and software to meet their needs. Responsible for the setup and configuration of general technology hardware, including monitors, laptops, and desktops. Performed hardware maintenance tasks, such as installing updates and troubleshooting issues. Provided technical support to analysts, troubleshooting software and hardware issues and ensuring the proper functioning of their tools and systems."
+    },
+    {
+        "job_type" : "intern",
+        "employer" : "Computer Forensics Research Lab",
+        "job_title" : "Cybercrime Analyst",
+        "description" : ""
+    }
+  ],
+  "certifications" : [
+    "CompTIA Security+",
+    "AWS Cloud Practitioner"
+  ],
+  "skills" : [
+    "C",
+    "C++",
+    "...",
+    "Python",
+    "Java",
+    "HTML",
+    "CSS",
+    "Javascript",
+    "Git",
+    "PostgreSQL",
+    "EdgeDB",
+    "React.js",
+    "Database Engineering",
+    "API Development",
+    "Web Scraping and Data Collection",
+    "Homelab and Self-Hosting"
+  ],
+  "projects" : [
+  ],
+  "awards" : [
+  ]
+}

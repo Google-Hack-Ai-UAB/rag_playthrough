@@ -1,0 +1,69 @@
+{
+  "experience": [
+    {
+      "job_type": "full_time",
+      "employer": "University of South Florida IT",
+      "job_title": "3D Print Lab Technician",
+      "description": [
+        "Develop scripts for recurring tasks in Javascript and Python to facilitate employee productivity.",
+        "Maintain and optimize scripts for increased speed through bug fixes, feature additions, and documentation updates.",
+        "Prioritize and organize over 500 customer requests per semester according to deadlines and 3D print speeds to guarantee customer satisfaction."
+      ]
+    },
+    {
+      "job_type": "full_time",
+      "employer": "Center For Advanced Medical Learning And Simulation (CAMLS)",
+      "job_title": "Student Researcher",
+      "description": [
+        "Authored a proceedings paper alongside esteemed doctors, addressing the use cases and essential precautions in AI integration within healthcare training.",
+        "Aforementioned paper was accepted for presentation at the upcoming IMSH conference in January.",
+        "Collaboratively analyzed the technical aspects of Dr. Shannon Bailey’s research question, offering insights into potential bottlenecks by acknowledging constraints posed by technological limitations"
+      ]
+    }
+  ],
+  "certifications": [],
+  "skills": [
+    "Python",
+    "C",
+    "C#",
+    "JavaScript",
+    "HTML",
+    "CSS",
+    "git",
+    "vscode",
+    "unity",
+    "openai"
+  ],
+  "projects": [
+    {
+      "activity_name": "Machine Learning Document Sorter",
+      "description": [
+        "Achieve a throughput of 4 documents a second while preserving accuracy and precision through the implementation of image preprocessing, Optical Character Recognition, and text preprocessing.",
+        "Maintain a comprehensive grasp of the entire system, enabling me to provide informed assistance to team members."
+      ],
+      "skills": ["python", "google colaboratory", "github"]
+    },
+    {
+      "activity_name": "DIminished Java Compiler",
+      "description": [
+        "Incrementally developed a compiler through the comprehensive implementation of a lexical analyzer, parser,abstract syntax tree builder, type checker, and code generator for Diminished Java programs",
+        "Deepened knowledge of compiler architecture, with a particular focus on semantic analysis, memory management (stack/heap), and the transformation of high-level code into machine-level instructions"
+      ],
+      "skills": ["C", "github"]
+    },
+    {
+      "activity_name": "CollegeIn Website",
+      "description": [
+        "Collaborated with a team of three to develop an efficient software workflow using Agile methodology and project management tools such as Jira and Github to ensure on-time project delivery.",
+        "Utilized Python to communicate with the backend and implemented FastAPI for efficient data storage in databases.",
+        "Created dynamic user pages using the retrieved data from the database, enhancing the user experience with unique user pages"
+      ],
+      "skills": ["Python", "JavaScript", "HTML", "CSS", "Jira", "github"]
+    },
+    {
+      "activity_name": "Customer Emailing Service",
+      "description": "Enhanced the automated emailing service to increase transparency and deliver complete and accurate order details, resulting in a significant reduction in email-related customer complaints",
+      "skills": ["JavaScript", "google apps script", "github"]
+    }
+  ]
+}
