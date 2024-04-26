@@ -3,8 +3,7 @@
 # and https://python.langchain.com/docs/use_cases/question_answering/
 
 
-import os
-import getpass
+import os, timeit
 from dotenv import load_dotenv
 import vertexai
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -26,23 +25,36 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_google_vertexai import VertexAI
 from langchain.schema.runnable import RunnablePassthrough
 
+from vertexai import generative_models
+from vertexai.generative_models import GenerativeModel
+
+model_gen_start = timeit.default_timer()
+model = GenerativeModel(model_name="gemini-1.0-pro")
+model_gen_end = timeit.default_timer()
+print(f"Model generation time: {model_gen_end - model_gen_start}")
+
 load_dotenv()
 
 project_id = "vertexaiconversations-418821"
 location = "us-central1"
 project_num = 316665376175
 
+vertex_init_start = timeit.default_timer()
 vertexai.init(project=project_id, location=location)
-
+vertex_init_stop = timeit.default_timer()
+print(f"Vertex init: {vertex_init_stop - vertex_init_start}")
 
 loader = UnstructuredPDFLoader("resumes/resume.pdf")
 #  UnstructuredPDFLoader("resumes/resume.pdf", mode="elements")
 data = loader.load()
 
 
+text_splitting_start = timeit.default_timer()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 0)
 splits = text_splitter.split_documents(loader.load())
 embeddings = VertexAIEmbeddings(model_name="textembedding-gecko@003")
+text_splitting_end = timeit.default_timer()
+print(f"Text splitting: {text_splitting_end - text_splitting_start}")
 
 
 pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
@@ -62,6 +74,7 @@ if index_name not in pc.list_indexes().names():
 index = pc.Index(name=index_name)
 
 # vectors = [(str(i), embeddings.embed_query(doc)) for i, doc in enumerate(splits)]
+vectoring_start = timeit.default_timer()
 vectors = [(str(i), embeddings.embed_query(str(doc))) for i, doc in enumerate(splits)]
 vectors = []
 for i, doc in enumerate(splits):
@@ -75,32 +88,40 @@ for i, doc in enumerate(splits):
 
 index.upsert(vectors=vectors)
 
+# vectors = []
+# for i, doc in enumerate(splits):
+#     doc_text = getattr(doc, 'page_content', "")
+#     if doc_text:
+#         try:
+#             embedding = embeddings.embed_query(doc_text)
+#             vectors.append((str(i), embedding))
+#         except Exception as e:
+#             print("ERROR")
+# index.upsert(vectors=vectors)
+vectoring_end = timeit.default_timer()
+print(f"Vectoring time: {vectoring_end - vectoring_start}")
 # Prompt 
 # https://smith.langchain.com/hub/rlm/rag-prompt
 
 
-rag_prompt = hub.pull("rlm/rag-prompt")
+# rag_prompt = hub.pull("rlm/rag-prompt")
 
 print("past index rag_prompt creation ")
 
 
 def retrieve_top_documents(question, index, embeddings, top_k=5):
-    question_embedding = embeddings.embed_query(question)
+    retrieval_start = timeit.default_timer()
     
+    question_embedding = embeddings.embed_query(question)
+
     query_results = index.query(vector=question_embedding, top_k=top_k)
     
     top_documents = [(match["id"], match["score"]) for match in query_results["matches"]]
-    
+
+    retrieval_end = timeit.default_timer()
+    print(f"Retrieval Time: {retrieval_end - retrieval_start}")
+
     return top_documents
-
-question = "Do you think Michael Gathara will be a good fit for a position that requires knowing Javascript?"
-top_documents = retrieve_top_documents(question, index, embeddings, top_k=5)
-print("Top documents:", top_documents)
-
-
-from vertexai import generative_models
-from vertexai.generative_models import GenerativeModel
-model = GenerativeModel(model_name="gemini-1.0-pro")
 
 def build_context_from_ids(document_ids, splits):
     context_texts = [splits[int(doc_id)].page_content for doc_id in document_ids]
@@ -115,7 +136,17 @@ def rag_query(question, index, embeddings, llm_model, top_k=5):
 
     context = build_context_from_ids(top_documents_ids, splits)
 
-    prompt = f"Question: {question}\n\nContext: {context}\n\nAnswer:"
+    # system_prompt = "You are an incredible recruiter assister. You to help a recruiter in finding the best candidate for a position. You are given a question, posed by a recruiter, then given context which may be information about candidates who applied to the position and you are to be somewhat verbose in your answer to be helpful. You can assume that the recruiter will conduct a technical interview as the next step. You are simply here to help assess if the applicants will be good for the position\n"
+
+    job_desc = ""
+
+    system_prompt = f"""
+        You are an expert technical recruiter assistant. You specialize in vetting candidates after looking at their resume. The recruiter is looking for a candidate who can do: 
+        ```{job_desc}```
+        You will be given a "Recruiter Question" which is the question the recruiter is asking about. You will be given "Context" which is resumes for individuals of which you will assess based on the recruiter question then you will answer the recruiter's question verbosely. Especially if you can answer with a helpful format, that would be a plus. You can assume this is just the first step in a couple sets of interviews. This step is simply finding out which candidates should move forward and which shouldn't
+    """
+
+    prompt = f"{system_prompt}\nRecruiter Question: ```{question}```\n\nContext: {context}\n\nAnswer:"
 
     answer = llm_model.generate_content(prompt)
     
@@ -123,20 +154,12 @@ def rag_query(question, index, embeddings, llm_model, top_k=5):
     
     return answer
 
+question_start = timeit.default_timer()
+question = "Do you think Michael Gathara will be a good fit for a position that requires knowing Javascript?"
+top_documents = retrieve_top_documents(question, index, embeddings, top_k=5)
 
 answer = rag_query(question, index, embeddings, model, top_k=5)
+question_end = timeit.default_timer()
+
+print(f"Time taken: {question_end - question_start} seconds")
 print("Generated answer:", answer)
-
-
-# RAG chain 
-
-# rag_chain = (
-#     {"context": retriever, "question": RunnablePassthrough()} 
-#     | rag_prompt 
-#     | llm 
-# )
-
-# rci_output = rag_chain.invoke("Who is Mitchell Kimbell")
-# print("rci_output is: ",rci_output)
-
-
