@@ -1,0 +1,6 @@
+GCP_PROJECT_ID = "vertexaiconversations-418821"
+GCP_LOCATION = "us-central1"
+GCP_PROJECT_NUM = 316665376175
+PINECONE_API_KEY = 'bb34fa83-7693-4d31-888e-a0865eccaedf'
+PINECONE_ENV = 'us-west1-gcp-free'
+GOOGLE_APPLICATION_CREDENTIALS = 'yyy.json'
