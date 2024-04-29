@@ -23,10 +23,10 @@ from vertexai.generative_models import GenerativeModel
 from constants import PINECONE_API_KEY
 
 # GLOBAL VARS
-pc = Pinecone(api_key = PINECONE_API_KEY)
+pc = Pinecone(api_key=PINECONE_API_KEY)
 splits_cache = {}
 embeddings = VertexAIEmbeddings(model_name="textembedding-gecko@003")
-model = GenerativeModel(model_name = "gemini-1.0-pro")
+model = GenerativeModel(model_name="gemini-1.0-pro")
 
 # CONFIGS
 index_name = "langchain-demo"
@@ -44,21 +44,21 @@ if index_name not in pc.list_indexes().names():
 index = pc.Index(name=index_name)
 
 
-def grab_local_files(index, resumes:str = "", ret:bool = True):
+def grab_local_files(resumes: str = "", ret: bool = True):
     """
     grabs local resume
     reads it for data
     splits it into semantic chunks
     embeds said chunks
     uploads the vectors
-    
+
     params:
-        index -> pinecone object, the index 
+        index -> pinecone object, the index
         resumes -> can take a file path, if none then it grabs all resumes
         ret -> t/f : says whether to return data or do it in place"""
     global splits_cache
-    if not resumes: 
-        resumes = glob.glob('resumes/*.pdf')
+    if not resumes:
+        resumes = glob.glob("resumes/*.pdf")
 
     data = {}
 
@@ -84,39 +84,44 @@ def grab_local_files(index, resumes:str = "", ret:bool = True):
                 except Exception as e:
                     print(f"Error embedding document from {file_path}, part {i}: {e}")
 
-    index.upsert(vectors = vectors)
+    index.upsert(vectors=vectors)
 
     if ret:
         return data
 
-def retrieve_top_documents(question, index, embeddings, top_k=5):
 
+# def retrieve_top_documents(question, index, embeddings, top_k=5):
+
+#     question_embedding = embeddings.embed_query(question)
+#     query_results = index.query(vector = question_embedding, top_k = top_k)
+
+#     top_documents = [
+#         (match["id"], match["score"]) for match in query_results["matches"]
+#     ]
+
+#     return top_documents
+
+
+def query(question, job_title, job_desc, top_k=3):
     question_embedding = embeddings.embed_query(question)
-    query_results = index.query(vector = question_embedding, top_k = top_k)
-
-    top_documents = [
-        (match["id"], match["score"]) for match in query_results["matches"]
-    ]
-
-    return top_documents
-
-def query(question, job_desc, top_k = 3):
-    question_embedding = embeddings.embed_query(question)
-    index_query = index.query(vector = question_embedding, top_k = top_k)
+    index_query = index.query(vector=question_embedding, top_k=top_k)
     top_docs_ids = [match["id"] for match in index_query["matches"]]
 
-    resume_context = " ".join([splits_cache[int(doc_id)].page_content for doc_id in top_docs_ids])
+    resume_context = " ".join(
+        [splits_cache[int(doc_id)].page_content for doc_id in top_docs_ids]
+    )
 
     # system_prompt = f"""
-    #     You are an expert technical recruiter assistant. You specialize in vetting candidates after looking at their resume. The recruiter is looking for a candidate who can do: 
+    #     You are an expert technical recruiter assistant. You specialize in vetting candidates after looking at their resume. The recruiter is looking for a candidate who can do:
     #     ```{job_desc}```
     #     You will be given a "Recruiter Question" which is the question the recruiter is asking about. You will be given "Context" which is resumes for individuals of which you will assess based on the recruiter question then you will answer the recruiter's question verbosely. Especially if you can answer with a helpful format, that would be a plus. You can assume this is just the first step in a couple sets of interviews. This step is simply finding out which candidates should move forward and which shouldn't
     # """
-    
+
     system_prompt = f"""
         You are an advanced technical recruiter assistant designed to aid in the preliminary screening of candidates based on their resumes. Your role is to assess candidates' suitability for specific roles as described by the recruiter.
 
         For each query:
+        - **Job Title**: {job_title}
         - **Job Description**: {job_desc}
         - **Recruiter Question**: This is a direct question from the recruiter regarding a candidate's fit for the role mentioned above.
 
@@ -137,3 +142,39 @@ def query(question, job_desc, top_k = 3):
     answer = answer.text
 
     return answer
+
+
+def inline_query_test(question):
+    grab_local_files()
+    job_title = f"""
+        Intern, Machine Learning and AI Development
+    """
+    job_desc = f"""
+        Primary Duties & Responsibilities
+
+            Assist in the development and optimization of ML and AI models.
+            Contribute to the integration and deployment of LLMs for various applications.
+            Develop and maintain APIs for interacting with LLMs.
+            Collaborate with the development team to design and implement new features.
+            Conduct research and analysis to improve model performance and efficiency.
+            Document and present findings and progress in team meetings.
+
+        Education & Experience
+
+            Bachelor's degree in Engineering, Computer Science, or a related field.
+            Currently enrolled in advanced studies (Master's or PhD) related to Computer Science, AI, or Machine Learning.
+            Proficient in Python programming.
+            Strong understanding of AI, ML concepts, and algorithms.
+            Experience with developing and consuming APIs.
+            Excellent problem-solving and analytical skills.
+            Ability to work independently and in a team environment.
+            Strong communication skills, both written and verbal.
+
+        Skills
+
+            Prior experience with Large Language Models (e.g., OpenAI GPT) is highly desirable.
+            Familiarity with software development tools and methodologies.
+            Python IDE tools (Spyder, Jupyter, PyCharm etc.)
+
+    """
+    return query(question=question, job_title=job_title, job_desc=job_desc)
