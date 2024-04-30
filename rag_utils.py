@@ -1,4 +1,6 @@
 import glob
+from dotenv import load_dotenv
+load_dotenv()
 from werkzeug.utils import secure_filename
 
 # EITHER
@@ -44,43 +46,76 @@ if index_name not in pc.list_indexes().names():
 index = pc.Index(name=index_name)
 
 
-def grab_local_files(resumes: str = "", ret: bool = True):
-    """
-    grabs local resume
-    reads it for data
-    splits it into semantic chunks
-    embeds said chunks
-    uploads the vectors
+# def grab_local_files(resumes: str = "", ret: bool = True):
+#     """
+#     grabs local resume
+#     reads it for data
+#     splits it into semantic chunks
+#     embeds said chunks
+#     uploads the vectors
 
-    params:
-        index -> pinecone object, the index
-        resumes -> can take a file path, if none then it grabs all resumes
-        ret -> t/f : says whether to return data or do it in place"""
+#     params:
+#         index -> pinecone object, the index
+#         resumes -> can take a file path, if none then it grabs all resumes
+#         ret -> t/f : says whether to return data or do it in place"""
+#     global splits_cache
+#     data = {}
+#     if not resumes:
+#         resumes = glob.glob("resumes/*.pdf")
+#         for file_path in resumes:
+#             # loader = UnstructuredPDFLoader(file_path)
+#             loader = PDFMinerLoader(file_path)
+#             resume_data = loader.load()
+#             data[secure_filename(file_path)] = resume_data
+#     else:
+#         loader = PDFMinerLoader(resumes)
+#         resume_data = loader.load()
+#         data[secure_filename(resumes)] = resume_data
+
+
+#     vectors = []
+#     for file_path, contents in data.items():
+#         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
+#         splits = text_splitter.split_documents(contents)
+
+#         splits_cache[file_path] = splits
+
+#         for i, doc in enumerate(splits):
+#             doc_text = doc.page_content
+#             if doc_text:
+#                 try:
+#                     embedding = embeddings.embed_query(doc_text)
+#                     vectors.append((f"{file_path}_{i}", embedding))
+#                 except Exception as e:
+#                     print(f"Error embedding document from {file_path}, part {i}: {e}")
+
+#     index.upsert(vectors=vectors)
+
+#     if ret:
+#         return data
+
+def grab_local_files(resumes: str = "", ret: bool = True):
     global splits_cache
+    data = {}
     if not resumes:
         resumes = glob.glob("resumes/*.pdf")
 
-    data = {}
-
     for file_path in resumes:
-        # loader = UnstructuredPDFLoader(file_path)
         loader = PDFMinerLoader(file_path)
         resume_data = loader.load()
-        data[secure_filename(file_path)] = resume_data
+        file_key = secure_filename(file_path)
+        data[file_key] = resume_data
 
-    vectors = []
-    for file_path, contents in data.items():
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
-        splits = text_splitter.split_documents(contents)
+        splits = text_splitter.split_documents(resume_data)
+        splits_cache[file_key] = [(file_key, split.page_content) for split in splits]
 
-        splits_cache[file_path] = splits
-
-        for i, doc in enumerate(splits):
-            doc_text = doc.page_content
+        vectors = []
+        for i, (name, doc_text) in enumerate(splits_cache[file_key]):
             if doc_text:
                 try:
                     embedding = embeddings.embed_query(doc_text)
-                    vectors.append((f"{file_path}_{i}", embedding))
+                    vectors.append((f"{file_key}_{i}", embedding))
                 except Exception as e:
                     print(f"Error embedding document from {file_path}, part {i}: {e}")
 
@@ -90,27 +125,29 @@ def grab_local_files(resumes: str = "", ret: bool = True):
         return data
 
 
-# def retrieve_top_documents(question, index, embeddings, top_k=5):
-
-#     question_embedding = embeddings.embed_query(question)
-#     query_results = index.query(vector = question_embedding, top_k = top_k)
-
-#     top_documents = [
-#         (match["id"], match["score"]) for match in query_results["matches"]
-#     ]
-
-#     return top_documents
-
-
 def query(question, job_title, job_desc, top_k=3):
     question_embedding = embeddings.embed_query(question)
     index_query = index.query(vector=question_embedding, top_k=top_k)
     top_docs_ids = [match["id"] for match in index_query["matches"]]
 
-    resume_context = " ".join(
-        [splits_cache[int(doc_id)].page_content for doc_id in top_docs_ids]
-    )
+    resume_contexts = []
+    for doc_id in top_docs_ids:
+        print(doc_id)
+        parts = doc_id.rsplit('_', 1)  # Split on the last underscore only
+        if len(parts) == 2:
+            file_key, split_index = parts
+            split_index = split_index[0]
+            print(f"Split Index: {split_index}")
+            split_index = int(split_index)
+            if file_key in splits_cache and split_index < len(splits_cache[file_key]):
+                name, content = splits_cache[file_key][split_index]
+                resume_contexts.append(f"Candidate from {name}:\n{content}")
+            else:
+                print(f"Missing or invalid split: {doc_id}")
+        else:
+            print(f"Invalid doc_id format: {doc_id}")
 
+    resume_context = "\n\n".join(resume_contexts)
     # system_prompt = f"""
     #     You are an expert technical recruiter assistant. You specialize in vetting candidates after looking at their resume. The recruiter is looking for a candidate who can do:
     #     ```{job_desc}```
