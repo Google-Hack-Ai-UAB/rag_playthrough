@@ -93,7 +93,7 @@ index = pc.Index(name=index_name)
 
 #     if ret:
 #         return data
-
+job_id ="662989ca29633d51cd5e38e9"
 def grab_local_files(resumes: str = "", ret: bool = True):
     global splits_cache
     data = {}
@@ -111,15 +111,17 @@ def grab_local_files(resumes: str = "", ret: bool = True):
         splits_cache[file_key] = [(file_key, split.page_content) for split in splits]
 
         vectors = []
+        metadata = []
         for i, (name, doc_text) in enumerate(splits_cache[file_key]):
             if doc_text:
                 try:
                     embedding = embeddings.embed_query(doc_text)
                     vectors.append((f"{file_key}_{i}", embedding))
+                    metadata.append({"job_id": job_id})
                 except Exception as e:
                     print(f"Error embedding document from {file_path}, part {i}: {e}")
 
-    index.upsert(vectors=vectors)
+        index.upsert(vectors=vectors, metadata=metadata)
 
     if ret:
         return data
@@ -166,7 +168,7 @@ def query(question, job_title, job_desc, top_k=3):
         1. Review the provided "Context," which includes selected resumes.
         2. Based on the recruiter's question and the job description, evaluate which candidates should advance to the next stage of the interview process.
         3. Provide a detailed response that explains your reasoning, highlighting relevant qualifications and experiences from the resumes. Use a structured format to answer, such as listing candidates followed by bullet points of their pertinent skills or experiences.
-        
+
         **DO NOT ASSUME OR BASE YOUR ANSWER ON GENDER, PERCEIVED RACE, SEX OR ANY POSSIBLE DEMOGRAPHIC QUALITIES A CANDIDATE MAY POSSES GIVEN WHAT YOU KNOW ABOUT THE CANDIDATES**
 
         **Note**: This is the first step in a multi-stage interview process. Your assessment should help narrow down the pool of candidates to those most likely to succeed in further rounds based on the job requirements.
